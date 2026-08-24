@@ -18,7 +18,7 @@ warn() { echo -e "${YELLOW}[WARN]${NC} $*"; }
 err() { echo -e "${RED}[ERR]${NC} $*" >&2; }
 
 BASELINE_REPO="blistartunivers-afk/blist-security-baseline"
-BASELINE_BRANCH="main"
+BASELINE_BRANCH="master"
 TARGET_DIR="${1:-.}"
 
 # Validate target
