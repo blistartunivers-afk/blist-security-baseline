@@ -19,12 +19,12 @@ jobs:
       pull-requests: write
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
         with:
           persist-credentials: false
 
       - name: "Pin GitHub Actions"
-        uses: suzuki-shunsuke/pin-github-action@v1
+        uses: suzuki-shunsuke/pinact-action@1081f5ad49ac904b7d977784f338145150a32112  # v1.4.0
         with:
           # Only pin actions in .github/workflows
           target: .github/workflows

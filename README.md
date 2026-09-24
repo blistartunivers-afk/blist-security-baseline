@@ -14,6 +14,8 @@ This repository contains the standardized security configuration applied across 
 | `.github/workflows/scorecard.yml` | OpenSSF Scorecard — weekly security posture analysis |
 | `.github/workflows/pin-actions.yml` | Pin all GitHub Actions to immutable SHAs (supply chain protection) |
 | `.github/workflows/slsa.yml` | SLSA Level 3 provenance generation for releases |
+| `.github/workflows/codeql.yml` | CodeQL static analysis (SAST) for JS/Python/Go |
+| `.github/workflows/secret-scanning.yml` | TruffleHog secret detection in git history |
 | `SECURITY.md` | Responsible disclosure policy, PGP key, response SLAs |
 | `CODEOWNERS` | Mandatory review rules for security-critical files |
 | `blist-init-repo.sh` | One-shot installer script |
@@ -69,8 +71,10 @@ After running the installer and pushing:
 |---------|----------|-----------|
 | Dependency Updates | Dependabot | Weekly (Mon 03:00) |
 | Security Scoring | OpenSSF Scorecard | Weekly (Mon 04:00) |
-| Action Pinning | pin-github-action | Weekly (Mon 05:00) |
+| Action Pinning | pinact-action | Weekly (Mon 05:00) |
 | Supply Chain | SLSA v1.9 / Provenance | On Release |
+| Static Analysis (SAST) | CodeQL | Weekly (Mon 06:00) + PR/Push |
+| Secret Scanning | TruffleHog | Weekly (Mon 07:00) + PR/Push |
 | Disclosure Policy | SECURITY.md | Always |
 | Code Review | CODEOWNERS | Every PR |
 
