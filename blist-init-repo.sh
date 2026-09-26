@@ -45,6 +45,8 @@ files=(
   ".github/workflows/scorecard.yml"
   ".github/workflows/pin-actions.yml"
   ".github/workflows/slsa.yml"
+  ".github/workflows/bandit.yml"
+  "Makefile"
   "SECURITY.md"
   "CODEOWNERS"
 )
