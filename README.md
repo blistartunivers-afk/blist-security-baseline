@@ -26,7 +26,7 @@ This repository contains the standardized security configuration applied across 
 
 ### Option 1: One-liner (recommended)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/blistartunivers-afk/blist-security-baseline/main/blist-init-repo.sh | bash
+curl -fsSL https://raw.githubusercontent.com/blistartunivers-afk/blist-security-baseline/master/blist-init-repo.sh | bash
 ```
 
 ### Option 2: Clone and run
@@ -110,7 +110,7 @@ When this repo is updated, re-run the installer in each target repo:
 ```bash
 ./blist-init-repo.sh /path/to/repo
 # or
-curl -fsSL https://raw.githubusercontent.com/blistartunivers-afk/blist-security-baseline/main/blist-init-repo.sh | bash
+curl -fsSL https://raw.githubusercontent.com/blistartunivers-afk/blist-security-baseline/master/blist-init-repo.sh | bash
 ```
 
 ---
@@ -133,3 +133,15 @@ MIT — Use freely across the BLIST ecosystem.
 
 > **Maintained by**: `@estiven` — BLIST Ecosystem
 > **Repository**: https://github.com/blistartunivers-afk/blist-security-baseline
+
+## Audited installer behavior
+
+The installer stages all downloads before modifying files and saves overwritten
+files beneath `.git/blist-baseline-backups/`. It accepts a Git worktree root.
+It does not automatically commit, push, or change branch protection. Review the
+result with `git diff` before staging your intended changes. Previous claims of
+automatic commits/protection above describe the legacy installer.
+
+`Pin Actions` now validates immutable SHA references; Dependabot proposes updates.
+The provenance workflow attests a source archive, not an application binary and
+not a certification of SLSA Level 3. No registry credentials are needed.
