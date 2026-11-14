@@ -14,6 +14,8 @@ trap 'rm -rf "$staging"' EXIT
 files=(
   .github/dependabot.yml
   .github/workflows/scorecard.yml
+  .github/workflows/bandit.yml
+  .github/workflows/codeql.yml
   .github/workflows/pin-actions.yml
   .github/workflows/slsa.yml
   .github/workflows/secret-scanning.yml
