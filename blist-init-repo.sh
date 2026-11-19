@@ -46,6 +46,7 @@ files=(
   ".github/workflows/pin-actions.yml"
   ".github/workflows/slsa.yml"
   ".github/workflows/bandit.yml"
+  ".pre-commit-config.yaml"
   "Makefile"
   "SECURITY.md"
   "CODEOWNERS"

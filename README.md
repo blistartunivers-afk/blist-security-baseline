@@ -10,7 +10,7 @@ This repository contains the standardized security configuration applied across 
 
 | File | Purpose |
 |------|---------|
-| `.github/dependabot.yml` | Weekly automated dependency updates (npm, GitHub Actions, Docker) |
+| `.github/dependabot.yml` | Weekly automated dependency updates (npm, pip, GitHub Actions) || `.pre-commit-config.yaml` | Local pre-commit hooks for secret detection (Gitleaks) & linting |
 | `.github/workflows/scorecard.yml` | OpenSSF Scorecard — weekly security posture analysis |
 | `.github/workflows/pin-actions.yml` | Pin all GitHub Actions to immutable SHAs (supply chain protection) |
 | `.github/workflows/slsa.yml` | SLSA Level 3 provenance generation for releases |
