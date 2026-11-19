@@ -114,8 +114,8 @@ ok ".gitignore updated"
 
 # 6. Commit changes
 log "Committing baseline files..."
-git add .github/dependabot.yml .github/workflows/ SECURITY.md CODEOWNERS .gitignore 2>/dev/null || true
-if ! git diff --cached --quiet; then
+git add .github/dependabot.yml .github/workflows/ .pre-commit-config.yaml SECURITY.md CODEOWNERS .gitignore 2>/dev/null || true
+if [ -n "$(git status --porcelain)" ]; then
   git commit -m "chore(security): apply BLIST security baseline
 
 - Add Dependabot for automated dependency updates
