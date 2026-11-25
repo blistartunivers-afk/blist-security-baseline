@@ -42,7 +42,7 @@ jobs:
           path: provenance
 
       - name: "Verify with slsa-verifier"
-        uses: slsa-framework/slsa-verifier/action@c9abffe4d2ab2ffa0b2ea9b2582b84164f390adc  # v2.3.0
+        uses: slsa-framework/slsa-verifier/action@ea584f4502babc6f60d9bc799dbbb13c1caa9ee6  # v2.7.1
         with:
           provenance: provenance/*.intoto.jsonl
           source-uri: github.com/blistartunivers-afk/${{ github.event.repository.name }}
