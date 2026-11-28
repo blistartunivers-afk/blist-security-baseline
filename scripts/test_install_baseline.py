@@ -29,6 +29,8 @@ class InstallerTests(unittest.TestCase):
             module.install(source, root, apply=True, overwrite=True)
             backups = list((root/'.blist-baseline-backups').rglob('SECURITY.md'))
             self.assertEqual(backups[0].read_text(), 'custom policy')
+            untracked = subprocess.check_output(['git', '-C', str(root), 'ls-files', '--others', '--exclude-standard'], text=True)
+            self.assertNotIn('.blist-baseline-backups/', untracked)
     def test_symlink_destination_refused(self):
         source = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as tmp:

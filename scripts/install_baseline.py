@@ -35,6 +35,7 @@ def install(source: Path, target: Path, *, apply: bool = False, overwrite: bool 
             existed = dst.exists()
             if existed:
                 (backup/name).parent.mkdir(parents=True, exist_ok=True)
+                (backup/".gitignore").write_text("*\n")
                 shutil.copy2(dst, backup/name)
             dst.parent.mkdir(parents=True, exist_ok=True)
             written.append((name, existed))
