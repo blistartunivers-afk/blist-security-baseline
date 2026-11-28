@@ -53,13 +53,5 @@ jobs:
           sarif_file: results.sarif
           category: scorecard
 
-      - name: "Fail on critical findings"
-        if: always()
-        run: |
-          if [ -f results.sarif ]; then
-            CRITICAL=$(jq '[.runs[]?.results[]? | select(.level == "error")] | length' results.sarif)
-            if [ "$CRITICAL" -gt 0 ]; then
-              echo "::error::Scorecard found $CRITICAL critical findings"
-              exit 1
-            fi
-          fi
+      - name: Fail on SARIF error findings
+        run: python3 scripts/check_sarif.py results.sarif
