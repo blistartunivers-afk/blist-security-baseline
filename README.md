@@ -1,135 +1,59 @@
 # BLIST Security Baseline
 
-> **One-command security hardening for every BLIST repository**
+Reusable security workflows and a local installer that preserves existing work.
+CI validates execution and report integrity; a green job is not a certification
+of a running service or proof that all reported findings are resolved.
 
-This repository contains the standardized security configuration applied across all BLIST ecosystem projects.
+## Installation
 
----
+Clone this repository so the installer and its templates are available together:
 
-## 📦 What's Included
-
-| File | Purpose |
-|------|---------|
-| `.github/dependabot.yml` | Weekly automated dependency updates (npm, pip, GitHub Actions) || `.pre-commit-config.yaml` | Local pre-commit hooks for secret detection (Gitleaks) & linting |
-| `.github/workflows/scorecard.yml` | OpenSSF Scorecard — weekly security posture analysis |
-| `.github/workflows/pin-actions.yml` | Pin all GitHub Actions to immutable SHAs (supply chain protection) |
-| `.github/workflows/slsa.yml` | SLSA Level 3 provenance generation for releases |
-| `.github/workflows/codeql.yml` | CodeQL static analysis (SAST) for JS/Python/Go |
-| `.github/workflows/secret-scanning.yml` | TruffleHog secret detection in git history |
-| `SECURITY.md` | Responsible disclosure policy, PGP key, response SLAs |
-| `CODEOWNERS` | Mandatory review rules for security-critical files |
-| `blist-init-repo.sh` | One-shot installer script |
-
----
-
-## 🚀 Quick Start
-
-### Option 1: One-liner (recommended)
-```bash
-curl -fsSL https://raw.githubusercontent.com/blistartunivers-afk/blist-security-baseline/main/blist-init-repo.sh | bash
-```
-
-### Option 2: Clone and run
 ```bash
 git clone https://github.com/blistartunivers-afk/blist-security-baseline.git
-cd blist-security-baseline
-./blist-init-repo.sh /path/to/your/repo
+python3 blist-security-baseline/scripts/install_baseline.py /path/to/target-repo
 ```
 
-### Option 3: Manual copy
-Copy the files you need from this repo to your target repository.
-
----
-
-## 🔧 What the Installer Does
-
-1. **Creates** `.github/workflows/` and `.github/dependabot/` directories
-2. **Downloads** all baseline configs from this repo
-3. **Updates** `.gitignore` with secret patterns
-4. **Configures** branch protection (requires `gh` CLI with admin perms)
-5. **Commits** everything with a descriptive message
-6. **Prints** next steps
-
----
-
-## 📋 Post-Install Checklist
-
-After running the installer and pushing:
-
-- [ ] **Enable branch protection** in GitHub UI (Settings → Branches → Branch protection rules)
-- [ ] **Add PGP public key** to `SECURITY.md`
-- [ ] **Configure SLSA secrets**: `REGISTRY_USERNAME`, `REGISTRY_PASSWORD`
-- [ ] **Review first Dependabot PRs** — merge after CI passes
-- [ ] **Monitor Scorecard results** — address findings < 7 days
-- [ ] **Verify SLSA provenance** on first release
-
----
-
-## 🔐 Security Features Enabled
-
-| Feature | Standard | Frequency |
-|---------|----------|-----------|
-| Dependency Updates | Dependabot | Weekly (Mon 03:00) |
-| Security Scoring | OpenSSF Scorecard | Weekly (Mon 04:00) |
-| Action Pinning | pinact-action | Weekly (Mon 05:00) |
-| Supply Chain | SLSA v1.9 / Provenance | On Release |
-| Static Analysis (SAST) | CodeQL | Weekly (Mon 06:00) + PR/Push |
-| Secret Scanning | TruffleHog | Weekly (Mon 07:00) + PR/Push |
-| Disclosure Policy | SECURITY.md | Always |
-| Code Review | CODEOWNERS | Every PR |
-
----
-
-## 🛡️ Threat Model Coverage
-
-| Threat | Mitigation |
-|--------|------------|
-| Dependency confusion / malicious packages | Dependabot + pinned versions + npm audit |
-| Compromised GitHub Action (tag mutation) | Pin Actions to SHA |
-| Supply chain injection (build tampering) | SLSA provenance + verification |
-| Unknown security posture | OpenSSF Scorecard |
-| Secret leakage | .gitignore patterns + secret scanning |
-| Unreviewed security changes | CODEOWNERS + branch protection |
-| Delayed vulnerability response | SECURITY.md SLAs |
-
----
-
-## 📁 Applying to Existing Repos
-
-The installer is idempotent — safe to run multiple times. It will:
-- Overwrite workflow files with latest baseline
-- Preserve your custom workflows (non-baseline files untouched)
-- Only commit actual changes
-
----
-
-## 🔄 Updating the Baseline
-
-When this repo is updated, re-run the installer in each target repo:
+The command prints a plan without changing the target. Review language selection,
+project-specific tests and existing workflow names before applying:
 
 ```bash
-./blist-init-repo.sh /path/to/repo
-# or
-curl -fsSL https://raw.githubusercontent.com/blistartunivers-afk/blist-security-baseline/main/blist-init-repo.sh | bash
+python3 blist-security-baseline/scripts/install_baseline.py /path/to/target-repo --apply
 ```
 
----
+Existing files with different contents require `--overwrite`. Originals are kept
+under `.blist-baseline-backups/` with a local ignore file. The installer never stages
+files, creates commits, modifies branches, downloads mutable templates or changes
+GitHub protections. Review and commit the resulting diff through the target's
+normal process. Do not pipe a standalone copy of the shell wrapper from curl.
 
-## 📚 References
+## Controls
 
-- [OpenSSF Scorecard](https://github.com/ossf/scorecard)
-- [SLSA Framework](https://slsa.dev/)
-- [GitHub Dependabot](https://docs.github.com/en/code-security/dependabot)
-- [Pin GitHub Action](https://github.com/suzuki-shunsuke/pin-github-action)
-- [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories)
+- Bandit JSON is preserved; installation, execution and parse failures are fatal.
+  Findings remain available for review, separately from infrastructure failures.
+- Scorecard resolves explicit and inherited SARIF levels. Error findings are not
+  silently ignored. Licenses, external fuzzing integration and other repository
+  posture items can require maintainer decisions beyond a source patch.
+- Pin Actions checks immutable references for every PR. The exact SLSA v2.1.0 tag
+  exception is documented because the builder validates its tag identity.
+- The checksum-pinned secret scanner examines history without calling providers.
+  Only detector counters appear in logs. Removed literals can still require
+  revocation/rotation; raw values are not uploaded as artifacts.
+- CodeQL uses explicit languages. Private repositories need entitlement and
+  `ENABLE_PRIVATE_CODEQL=true`; an unavailable analysis is explicitly skipped.
+- Public manual/release provenance builds and verifies a real source archive.
+  It does not certify compiled binaries. Private code is not sent to a public
+  transparency log. See [CI configuration](docs/CI_SECURITY.md).
 
----
+## Local validation
 
-## 📄 License
+```bash
+make audit
+python3 scripts/test_install_baseline.py
+make scan
+```
 
-MIT — Use freely across the BLIST ecosystem.
+`make audit` validates baseline source, workflow contracts and the SARIF gate.
+`make scan` executes Bandit and propagates its status. Neither command changes
+remote settings or live agent state.
 
----
-
-> **Maintained by**: `@estiven` — BLIST Ecosystem
-> **Repository**: https://github.com/blistartunivers-afk/blist-security-baseline
+[Security reporting](SECURITY.md) · [MIT license](LICENSE)

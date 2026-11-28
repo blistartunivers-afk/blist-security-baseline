@@ -7,3 +7,5 @@ details. Do not use the historical example email or PGP values as verified conta
 
 Reports should identify the affected commit, entry point, expected boundary and
 an isolated reproduction. A passing CI badge does not certify a deployment.
+
+Private channel when enabled: [GitHub Security Advisories](https://github.com/blistartunivers-afk/blist-security-baseline/security/advisories/new).
