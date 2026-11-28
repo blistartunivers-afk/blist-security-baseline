@@ -1,15 +1,8 @@
-# BLIST Security Makefile
-.PHONY: scan audit clean help
-
+# Commands propagate errors; audit never mutates repositories or GitHub settings.
+.PHONY: scan audit help
 help:
-	@echo "BLIST Security Tools"
-	@echo "  make scan    - Run Bandit (Python SAST)"
-	@echo "  make audit   - Full system security audit"
-
+	@echo "make scan: Bandit source analysis; make audit: executable baseline checks"
 scan:
-	@echo "[*] Running Bandit SAST..."
-	@bandit -r . || echo "[!] Bandit found issues or is not installed"
-
+	bandit -r scripts -f json -o bandit-results.json
 audit:
-	@echo "[*] Running BLIST Security Audit..."
-	@python3 -c "print('Audit logic placeholder')"
+	python3 scripts/audit_baseline.py

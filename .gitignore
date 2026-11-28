@@ -5,3 +5,11 @@
 .env*
 *.secret
 secrets/
+
+# Local artifacts retained outside version control
+__pycache__/
+*.pyc
+*.bak
+*.bak.[0-9]*
+.blist-baseline-backups/
+bandit-results.json
